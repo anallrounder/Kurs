@@ -54,7 +54,6 @@ class Person {
 			System.out.print("\t" + numArr[i] +  "  ");
 		}
 		return isDuplicate;
-
 	}
 }
 
@@ -92,7 +91,5 @@ public class GameMain {
 			System.out.println("아쉽군요!");
 		}
 		sc.close();
-
 	}
-
 }
