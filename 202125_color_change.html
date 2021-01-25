@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script>
+    window.onload = function () {
+      //$("body").css("background-color", "#000000");
+
+      function change() {
+        var random = Math.floor(Math.random() * 5);
+        console.log(random);
+        switch (random) {
+          case 0:
+            $("body").css("background-color", "#ff0");
+            break;
+          case 1:
+            $("body").css("background-color", "#6c0");
+            break;
+          case 2:
+            $("body").css("background-color", "#fcf");
+            break;
+          case 3:
+            $("body").css("background-color", "#cf0");
+            break;
+          default:
+            $("body").css("background-color", "#39f");
+            break;
+        }
+      }
+      document.getElementById("change").onclick = change;
+
+    };
+  </script>
+  </title>
+
+<body>
+
+  <input type="button" id="change" value="color change" />
+
+</body>
+
+</html>

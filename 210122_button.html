@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>box</title>
+  <script>
+    'use strict';
+
+    window.onload = function () {
+      function makeBox() {
+        //var dnode = "";
+        //dnode += "<div id='box'> box </div>";
+        //document.getElementById("here").innerHTML = dnode;
+        //document.body.appendChild(dnode);
+
+        var boxNode = document.createElement("div");
+        var textNode = document.createTextNode("box");
+
+        boxNode.appendChild(textNode);
+        document.body.appendChild(boxNode);
+
+        //var boxNode = document.getElementById('box');
+        boxNode.style.width = "200px";
+        boxNode.style.height = "200px";
+        boxNode.style.backgroundColor = "rgb(0, 119, 255)";
+        boxNode.style.display = "inline-block";
+        boxNode.style.fontSize = "1.5em";
+        boxNode.style.color = "rgb(218, 218, 218)";
+        boxNode.style.lineHeight = "200px";
+        boxNode.style.textAlign = "center";
+        boxNode.style.fontWeight = "bold";
+        boxNode.style.margin = "5px";
+
+        console.log("create");
+      }
+      document.getElementById("target").onclick = makeBox;
+      // var add = doucment.getElementById("target");
+      // add.addEventlistner('click', makeBox, false);
+    };
+
+  </script>
+</head>
+
+<body>
+  <input type="button" id="target" value="BOX 만들기" />
+  <hr />
+  <!-- <div id="here"></div> -->
+</body>
+
+</html>
