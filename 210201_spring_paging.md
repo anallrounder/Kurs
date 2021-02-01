@@ -1,4 +1,4 @@
-# 2021.02.01 월 Spring
+# 2021.02.01 월 Spring_paging
 
 ## 페이징
 
@@ -16,6 +16,8 @@
 - 무엇을 변수로 표현해 내야할 지를 모르기 때문에 어렵다.  
 - 여기서는 7개 변수로 표현한다.  
 - 1, 2, 3, 각각 눌렀을 때 들어갈 요소들
+
+<br>
 
 > edu.bit.ex.board.controller  
 
@@ -38,6 +40,8 @@ public void list2(Criteria cri, Model model) throws Exception {
 	//total로 전체를 받아온다음 객체를 생성해서 pageMaker로 넘김 (리스트로)
 }
 ```
+<br>
+
 > edu.bit.ex.board.page
 
 - Criteria.java
@@ -78,6 +82,7 @@ public class Criteria {
 	}
 }
 ```
+<br>
 
 - PageVO.java
 
@@ -143,6 +148,7 @@ public class PageVO {
 	}
 }
 ```
+<br>
 
 > edu.bit.ex.board.service
 
@@ -168,6 +174,7 @@ public int getTotal(Criteria cri) {
 	return mapper.getTotalCount(cri);
 }
 ```
+<br>
 
 > edu.bit.ex.board.mapper
 
@@ -177,6 +184,7 @@ public int getTotal(Criteria cri) {
 public List<BoardVO> getListWithPaging(Criteria cri);
 public int getTotalCount(Criteria cri);
 ```
+<br>
 
 > src/main/resources > edu.bit.ex.board.mapper
 
@@ -208,8 +216,10 @@ public int getTotalCount(Criteria cri);
 		]]>
 </select>
 ```
+<br>
 
 - sql develper에서 게시판 페이징 rownum 개념에 대해 이해하기
+  
 ```sql
 select * from emp;
 select a.* from emp a;
@@ -263,6 +273,7 @@ select * from (
             ) a where rnum <= #{pageNum} * #{amount}
 	)where rnum > (#{pageNum}-1) * #{amount} 
 ```
+<br>
 
 > src > main > webapp > WEB-INF > views > board 
 
@@ -283,7 +294,7 @@ select * from (
 </c:if>
 <br>
 ```
-테이블 태그 뒤에 이어서 붙여넣는다. 
-
+테이블 태그 뒤에 이어서 붙여넣는다.   
+<br>
 
 > 오늘부터 오후에 db설계 2시간씩 진도나감!! (database modeling)
