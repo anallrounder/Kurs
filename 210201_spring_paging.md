@@ -209,6 +209,61 @@ public int getTotalCount(Criteria cri);
 </select>
 ```
 
+- sql develper에서 게시판 페이징 rownum 개념에 대해 이해하기
+```sql
+select * from emp;
+select a.* from emp a;
+-- 위와 아래는 같은 결과를 불러오는 쿼리문이다. 
+
+select rownum rn, a.* from emp a;
+-- 번호주는 것. emp에 a라는 별칭을 주고 rn에서 a.* 전부 다 나오게 함
+-- 기본적인 컨셉은?
+
+select * from mvc_board;
+--rownum 붙일 땐 칼럼명을 붙여주거나 다 보고싶을 때는 board.*이렇게 해야함
+
+select rownum rn, board.* from mvc_board board;
+-- rownum은 앞에 번호를 붙여 주는 것. bid는 댓글을달거나 삭제하면 번호를 구분할 수 없기 때문에
+-- rownum으로 새로 번호를 붙여주고 거기서 받아오는 방법으 사용하는 것
+
+select rownum rn, bid, bname, btitle from mvc_board
+where rownum <= 10;
+-- 여기까지는 잘 된다.
+
+select rownum rn, bid, bname, btitle from mvc_board
+where rownum > 10 and rownum <= 20;
+-- 이건 왜 안될까? 11-20을 뽑고싶은데...
+
+-- rownum이 언제 먹히는가(할당)가 중요하다.\ sql처리 순서 (반드시 외우자)
+-- 1. from / where 절이 먼저 처리된다. 
+    -- 기본적으로 1번. from emp 어디 테이블인지 정하는게 먼저이고
+    -- 그리고 2번. where조건을 따지고 나서 3번. select를 실행한다.
+-- 2. rownum이 할당되고 from / where절에서 전달되는 각각의 출력 로우에 대해 증가(increment)된다. 
+    -- select가 적용되기 전에 번호를 붙여나간다.
+-- 3. select가 적용된다.
+-- 4. group by 조건이 적용된다.
+-- 5. having이 적용된다. (group by의 조건절)
+-- 6. order by 조건이 적용된다. (마지막에 정렬)
+
+-- where rownum > 10 and rownum <= 20;
+-- 여기서 rownum이 먼저 하나를 가져오면 무조건 1이기 때문에 1 > 10은 거짓이 되어서 출력될 수 없다.
+
+-- 그럼 가져오려면?
+select bid, bname
+from 
+    (select rownum rn, bid, bname, btitle from mvc_board
+    where rownum <= 20)
+where rn > 10;
+
+-- 최종 sql
+select * from (
+    select rownum rnum, a.* 
+			from ( 
+                select * from mvc_board order by bGroup desc, bStep asc
+            ) a where rnum <= #{pageNum} * #{amount}
+	)where rnum > (#{pageNum}-1) * #{amount} 
+```
+
 > src > main > webapp > WEB-INF > views > board 
 
 - list2.jsp 
