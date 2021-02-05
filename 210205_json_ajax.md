@@ -218,7 +218,6 @@ browser에서 확인 해보면 before와 마찬가지로 xml, json 형식으로 
 http://localhost:8282/ex/rest/after
 처음엔 텍스트 형태로 보이다가 -> xml방식으로 보여짐  
 (내 크롬브라우저에서는 xml로 보이지가 않는다. 왜일까 ㅜㅜ)
-`//192.168.0.93`
 
 http://localhost:8282/ex/rest/after.json  
 .json을 붙이면 아래와 같이 json 문법으로 리턴해 준 것을 확인해 볼 수 있다.
@@ -244,7 +243,7 @@ http://localhost:8282/ex/rest/after.json
 "bContent":"테스트","bDate":1612030555000,"bHit":0,"bGroup":2132,"bStep":0,"bIndent":0},
 {"bId":2131,"bName":"test","bTitle":"테스트","bContent":"테스트","bDate":1612030555000,
 "bHit":0,"bGroup":2131,"bStep":0,"bIndent":0}, 
-.....
+//...
 
 ```
 
