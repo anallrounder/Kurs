@@ -441,13 +441,25 @@ user 지우고
 
 ###### 📦 org.springframework.security.core
 
-###### 📄 Authentication.class
+###### 📄 Authentication.class 
+
+-> 찾던건 이게 아닌데 왜 열어놨었을까??  
+-> 다시 찾음
+
+#### 📚 Maven Dependencies
+
+##### 🍯 spring-security-core-5.0.6.RELEASE.jar
+
+###### 📦 org.springframework.security.core.userdetails.jdbc
+
+###### 📄 JdbcDaoImpl.calss ->이거다
 
 ```java
 public class JdbcDaoImpl extends JdbcDaoSupport//이거 실행
     implements UserDetailsService, MessageSourceAware {
   // ~ Static fields/initializers
   // =====================================================================================
+  //쿼리 맵핑 부분!!
 
   public static final String DEF_USERS_BY_USERNAME_QUERY = "select username,password,enabled "
       + "from users " + "where username = ?";
@@ -473,8 +485,8 @@ public class JdbcDaoImpl extends JdbcDaoSupport//이거 실행
 
     ...
 
- //이부분이 핵심
-  protected List<UserDetails> loadUsersByUsername(String username) {
+ //이부분이 핵심 -> 여기서 쿼리를 읽어서 날린다.
+  protected List<UserDetails> loadUsersByUsername(String username) { //username을 통해서 가져와서,<UserDetails>가 상속(폴리머피즘적용된것) 내부적으로 동작 이렇게함!
   return getJdbcTemplate().query(this.usersByUsernameQuery,
       new String[] { username }, new RowMapper<UserDetails>() {
         @Override
@@ -491,7 +503,7 @@ public class JdbcDaoImpl extends JdbcDaoSupport//이거 실행
 }
 ```
 
-그리고
+그리고 user는 여기에...
 
 ###### 📦 org.springframework.security.core.userdetails
 
