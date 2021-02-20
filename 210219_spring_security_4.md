@@ -282,7 +282,7 @@ public void addUser(UserVO userVO){
 
 > Q. 이제 암호화되어있는거 로그인할 수있게 해보자. 어떻게 하면 자동 디코딩해서 로그인할 수 있게 할까?
 
-impl객체는 로그인때만 쓰는거지 저 프로바이더 에 있는거에 레퍼런스를 
+impl객체는 로그인때만 쓰는거, 저 provider 에 있는거에 레퍼런스를
 
 ```xml
 <!-- provider -->
@@ -301,7 +301,7 @@ impl객체는 로그인때만 쓰는거지 저 프로바이더 에 있는거에 
   <beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 ```
 
-우리 지금까지 커스텀으로 썼는데 제공해주는걸 bcryptPasswordEncoder이거 를 사용하면 된다.
+지금까지 커스텀으로 썼는데 제공해주는 bcryptPasswordEncoder를 사용하면 된다.
 이게 정답이었음.....
 
 ```xnml
@@ -316,36 +316,38 @@ impl객체는 로그인때만 쓰는거지 저 프로바이더 에 있는거에 
 
 오후!
 
-지금까지는 세팅을 통해서 했지만 실무에서는 이렇게 하지 않는다.
-왜일까? 예를들면 usernaem, password, enabled 와같이 해당 db를 만들라는 법이 없기 때문이다.  
-datatabe 설계할 때 user에는 address, email, gender, image 등등 여러가지 기타 칼럼이 들어가기 때문에 
+> 지금까지는 세팅을 통해서 했지만 실무에서는 이렇게 하지 않는다.
+왜일까?  
 
-로그인 정보를 세션에 올린다.
-우리가 로그인을 시키는 이유? login은 부차적인거고 user정보를 메모리에 올리는데 그 대표적 방법이 세션이다. 로그인페이지 말고도, 쇼핑몰이라면 -님 / 장바구니 / 개인정보 페이지 등 다른것들이 많다. 로그인은 기본적인 기능이고 그 이후 정보를 써먹는게 기본적인 목적이다.
+- 예를들면 usernaem, password, enabled 와같이 해당 db를 만들라는 법이 없기 때문이다.  (datatabe 설계할 때 user에는 address, email, gender, image 등등 여러가지 기타 칼럼이 들어가기 때문)
 
-멤버 가입/수정하면 이런것도 가능하게 만들어야한다.
+> 로그인 정보를 세션에 올린다. 우리가 로그인을 시키는 이유?  
+
+- login은 부차적인거고 user정보를 메모리에 올리는데 그 대표적 방법이 세션이다.  
+로그인페이지 말고도, 쇼핑몰이라면 -님 / 장바구니 / 개인정보 페이지 등 다른것들이 많다. 로그인은 기본적인 기능, 그 이후 정보를 써먹는게 기본적인 목적이다.
+- 멤버 가입/수정하면 이런것도 가능하게 만들어야한다.
 
 - 인터셉터를 로그인목적으로 쓸 필요가 전혀 없다.
 
-  옛날에 세션올려서 쓰는거 el로 썼는데 여기선 어떻게씀?  
-  jstl에서는 어떻게 써먹냐? principal이다.
+> 옛날에 세션올려서 쓰는거 el로 썼는데 여기선 어떻게쓸까?  
 
-기 세션 객체에 확장시켜서 가져오른건 커스터마이징하는건
+- jstl에서는 어떻게 써먹냐? principal이다.  
+  세션 객체에 확장시켜서 가져오른건 커스터마이징하는건
 
-- princial.emp
-- pincipal.emp.ename
-- principal.emp.empno
-- principal.emp.cart
+  - princial.emp
+  - pincipal.emp.ename
+  - principal.emp.empno
+  - principal.emp.cart
 
-```xml
-<sec:authentivation property="principal.emp.sal" />
-```
+  ```xml
+  <sec:authentivation property="principal.emp.sal" />
+  ```
 
-이런식으로 하는것이다.
+  이런식으로 하는것이다.
 
-대표적으로 세션쓰는게 쇼핑카트(장바구니) 기능이다.
-세션 유지기간은? 로그아웃등의 세션만료시간까지이다. (대략 30분-지정가능)
-그러니까 따로 생성하지 않고 세션객체에 principal써서 같이 넣고 들리면 더 좋다.
+  대표적으로 세션쓰는게 쇼핑카트(장바구니) 기능이다.  
+  세션 유지기간은? 로그아웃등의 세션만료시간까지이다. (대략 30분-지정가능)  
+  그러니까 따로 생성하지 않고 세션객체에 principal써서 같이 넣고 돌리면 더 좋다.  
 
 ---
 
@@ -389,9 +391,9 @@ public class EmpVO {
 
 #### EmpMapper.java (interface)
 
-유저맵퍼 복붙
+UserMapper 복붙
 
-```java 
+```java
 package edu.bit.ex.mapper;
 
 import org.apache.ibatis.annotations.Insert;
@@ -508,7 +510,7 @@ public class AuthVO {
 }
 ```
 
-1:n이라서 처리하기위해 엑셈엘 맵퍼만들어줘야함
+1:N 이라서 처리하기 위해 Mapper.xml을 만들어 줘야 함!
 
 > src/main/resources > edu.bit.ex.mapper
 
@@ -544,7 +546,7 @@ public class AuthVO {
 
 !! 중요한 파일 두 개 남음
 
-vo 에다가 멤버유저 생성
+> edu.bit.ex.vo 에 MemeberUSer 생성
 
 #### MemberUser.java
 
@@ -626,16 +628,6 @@ public class MemberDetailsService implements UserDetailsService {
   // 자손이 구현 이거 하나만 하면 됨/ 멤버멥퍼 가져와서 유저 디테일즈로 리턴을 시켜야한다.
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    //loadUserByUsername 이게 핵심! 진짜 중요함 외우자. UserDetails 리턴
-    //스프링시큐리티가 객체생성하라고했는데 예전엔 아엠피엘에서 생성했는데 이번에는 안했ㄴ으니까우리가구현해야하는데
-    //그때 따라오는게loadUserByUsername이고 (String username)가 로그인할때 유저네임을 말한다.
-    // 로그인할때 이 함수를 반드시 호출하게 되어있다. -> 이게 스프링시큐리티의 법칙이다.
-    //authentication-provider에서 레퍼런스로 지정했다.
-    // 내가만들어서 내가 리턴시키는거다.스프링시큐리티가 저 함수로드저걸 호출해주니까.
-    // 스프링이 안에 파라미터 유저네임 넣어줌. 로그인하면 여기에 넣어주겠다. 나머진 니가 알아서해라
-    // 유저 디테일즈를 니가 캐스팅해서 알아서해라
-    // 유저 디테일즈를 누가 가져감? 스프링이 가져감 .(내가 써먹는게 아님)
-    // 유저 디테일즈 형으로 멤버유저를 
     
     log.warn("Load User By MemberVO number: " + username);
     MemberVO vo = memberMapper.getMember(username);
@@ -649,6 +641,20 @@ public class MemberDetailsService implements UserDetailsService {
 }
 ```
 
+↓ 이게 핵심! 진짜 중요함 (UserDetails를 커스텀해서 알아서하라는 것)
+
+```java
+@Override
+public UserDetails loadUserByUsername(String username)
+```
+
+- loadUserByUsername 은 무조건 UserDetails 리턴함
+- 예전엔 JdbcDaoImpl에서 객체를 생성했는데 이번에는 안했으니까 우리가 직접 구현해야 하는데 그 때 따라오는게 loadUserByUsername(String username)이고 username은 로그인할 때의 username을 말한다.(호출은 스프링 시큐리티가 해주지만 내가 만들어서 내가 리턴 시키는 거다.)
+- 로그인할때 이 loadUserByUsername함수를 반드시 호출하게 되어있다.(스프링시큐리티 법칙) -> UserDetails를 스프링이 가져간다.(내가 써먹는게 아님)
+- authentication-provider에서 레퍼런스로 지정했다.
+  `<authentication-provider user-service-ref="empDetailsService">`
+- 스프링이 안에 파라미터 username 넣어줌. (로그인하면 여기에 username 넣어주고, 나머진 알아서 하라고 함) 
+
 #### security-custom-context.xml
 
 이부분 수정 (jdbc는 유물이라... 안쓸거라 지움)
@@ -657,7 +663,6 @@ public class MemberDetailsService implements UserDetailsService {
 <beans:bean id="bcryptPasswordEncoder"
   class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-  
 <beans:bean id="customNoOpPasswordEncoder" class="edu.bit.ex.security.CustomNoOpPasswordEncoder"/>
 <beans:bean id="memberDetailsService" class="edu.bit.ex.security.MemberDetailsService" />  <!-- 이거를 아래로 끌고와서 -->
 
@@ -668,7 +673,7 @@ public class MemberDetailsService implements UserDetailsService {
 </authentication-manager>
 ```
 
-전체코드
+전체 코드
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
