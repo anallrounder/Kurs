@@ -60,28 +60,28 @@ controller -> service -> impl -> mapper interface -> mapper xml(sql) -> jsp(view
 <![CDATA[ sql ]]> ( ; -> x )
 ```
 
-##### list - select (resultType) :
+##### list - select (resultType vo) :
 
 ```sql
 select * from mvc_board order by bgroup desc, bstep asc
 ```
 
-##### getListWithPaging:
+##### getListWithPaging :
 
 ```sql
 select * from (select rownum as rnum, a.* from ( select * from mvc_board order by bGroup desc, bStep asc)a 
 where rownum <= #{pageNum} * #{amount}) where rnum > (#{pageNum}-1) * #{amount} 
 ```
 
-##### getTotalCount: 
+##### getTotalCount (resultType int) :
 
 ```sql
-select count(*) from mvc_board(int)
+select count(*) from mvc_board
 ```
 
 ##### write_view (x)
 
-##### write  - insert :
+##### write (insert) :
 
 ```sql
 insert into mvc_board (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent) 
@@ -94,7 +94,7 @@ values (mvc_board_seq.nextval, #{bName}, #{bTitle}, #{bContent}, 0, mvc_board_se
 select * from mvc_board where bId = #{bId}
 ```
 
-##### hitupdate -
+##### hitupdate :
 
 ```sql
 update mvc_board set bHit = bHit +1 where bId = #{bId}
