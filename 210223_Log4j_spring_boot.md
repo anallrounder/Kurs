@@ -281,6 +281,7 @@ value="[%d{yyyy-MM-dd HH:mm:ss}] %-5p: %F:%L - %m%n" />
   <version>1.16</version>
 </dependency>
 ```
+
 이건 원래 logging쪽에 들어가는게 맞다.
 
 #### root.xml
@@ -362,7 +363,7 @@ value="[%d{yyyy-MM-dd HH:mm:ss}] %-5p: %F:%L - %m%n" />
 
 ## 스프링부트
 
-### 특징
+### 특징1
 
 - 단독으로 실행이 가능한 스프링 애플리케이션을 생성
 - 톰캣, Jetty, Undertow를 내장
@@ -397,16 +398,20 @@ next >
 
 여기서 라이브러리 설정가능
 
+```java
 - Mybatis Framework
 - Lombok
- 두개는 잘 설정됨 
-  나머지는 pom.xml 설정해야함(버전 안맞거나하는 문제가 있다.)
+ 
+ 위의 두 개는 잘 설정됨 
+ 나머지는 pom.xml 설정해야함(버전 안맞거나하는 문제가 있다.)
+
 - Oracle Driver
--  Spring Boot DevTools
+- Spring Boot DevTools
+```
 
 next >
 
-Finish > 
+Finish >
 
 ---
 
@@ -442,7 +447,7 @@ DispatcherServlet등을 안보이도록 해버렸다.
 
 #### SpringBootBoardApplication.java
 
-이제 mian이 보인다.
+이제 mian이 보인다. 메인이니까 여기서부터 프로그램이 시작한다!
 
 ```java
 package edu.bit.ex;
@@ -630,4 +635,102 @@ http://localhost:8282/ 로 접속해보면
 
 가 다음과 같이 출력되는것을 확인해볼 수 있다.
 
-<img src="">
+<img src="https://github.com/anallrounder/Images/blob/main/%ED%99%94%EB%A9%B4%20%EC%BA%A1%EC%B2%98%202021-02-23%20151912.png?raw=true">
+
+---
+
+### 연습2
+
+project name: spring_boot_hello  
+view: heollo world!
+
+설정이 절반이다.  
+버전을 잘 맞춰야한다.
+
+---
+
+### 추가설정!!!
+
+jsp사용하기 위해서 다음 라이브러리를 추가한다.
+
+#### pom.xml
+
+```xml
+<dependency>
+  <groupId>org.apache.tomcat.embed</groupId>
+  <artifactId>tomcat-embed-jasper</artifactId>
+  <scope>provided</scope>
+</dependency>
+
+<!-- jstl 라이브러리 -->
+<dependency>
+  <groupId>javax.servlet</groupId>
+  <artifactId>jstl</artifactId>
+</dependency>
+```
+
+---
+
+> src/main/resources > static
+
+- 이미지랑 js 들어감
+
+---
+
+### spirng boot 특징2
+
+- jsp 권장하지 않음
+- timeleap권장함 (일반 jsp문법보단 간단하다.)  
+  jstl등등은 대부분 자바언어 기반. 자바 탈피하려고한다.  
+  (구글의 코틀린 등 지원하기도 함)  
+  `template/index.html`와 같이 확장자도 html권장
+
+- 타임리프 문법(앞에 th붙는 등등의 문법)을 권장한다.  
+  
+  ```html
+  <link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
+  ```
+
+- 스프링부트를 쓰더라도 컨트롤러 사용할 수 밖에 없다.
+- 참고: https://jongminlee0.github.io/2020/03/12/thymeleaf/
+
+---
+
+### 오늘 과제
+
+스프링부트로  
+
+- project name: spring_boot_board_list  
+- 게시판 list.jsp
+- 부트스트랩 사용하기
+- 타임리프 문법도 써보자
+
+---
+
+## 조별 스터디 [4조]
+
+### mapper경로설정
+
+1) mapper.xml 경로를 properties에 다음과 같이 추가함
+  
+#### - application.properties 
+
+```xml
+mybatis.mapper-locations=/mapper/*.xml
+```
+
+2) 메인 함수가 있는 SpringBootBoardListApplication.java에 @MapperScan 어노테이션을 붙이면 @Mapper 어노테이션을 안써도 알아서 스캔함
+
+#### -SpringBootBoardListApplication.java
+
+```java
+@MapperScan(basePackageClasses = edu.bit.ex.mapper.BoardMapper.class)
+@SpringBootApplication
+public class SpringBootBoardListApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(SpringBootBoardListApplication.class, args);
+  }
+
+}
+```
