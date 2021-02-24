@@ -1,4 +1,4 @@
-# 2021.02.24 수요일 Spring Boot(2), Test
+# 2021.02.24 수요일 Spring Boot(2), Test, 형상관리
 
 ## Spring Boot(2)
 
@@ -312,7 +312,7 @@ content.name=kim
 
 ---
 
-## Test
+## Test 
 
 ### v모델
 
@@ -322,3 +322,86 @@ content.name=kim
 - 통합테스트: 컨트롤러 확인(서비스들어있음-mock서비스 맵퍼 다들어잇어서)
 - 시스템 테스트: =부하테스트: 실제로 십만명 동접자 만들어서 테스트함(파일백개 동시업로드 가능?)
 - 유저테스트: 실제로 유저가 사용 해보는 테스트
+
+### Spring Boot test
+
+#### pom.xml
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+
+버전5 기본적으로 들어있고 4로 바꾸려면 따로 설정해야함 
+
+> src/test/java > edu.bit.ex
+
+#### BoardTests.java
+
+```java
+package edu.bit.ex;
+
+import javax.sql.DataSource;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension; //이거 주피터 사용
+
+import edu.bit.ex.mapper.BoardMapper;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ExtendWith(SpringExtension.class)//jupiter
+//@RunWith(springRunner.class)/이게 4버전
+@SpringBootTest
+class BoardTests {
+
+  @Autowired
+  private BoardMapper mapper;
+
+  @Autowired
+  private DataSource ds;
+
+  @Test //junit5 library 가져올것!
+  public void testDataSource() {
+    System.out.println("Ds=" + ds);
+  }
+}
+```
+
+---
+
+오후: Tool 깃허브 - 소스트리 
+
+## 형상관리(소스관리)툴
+
+- 협업 - 관리
+
+### 종류
+
+- CVS (거의 안씀)
+- SVN
+- Github
+- 유사한 사이트도 있음
+  
+### 중앙집중식 vs 분산 버전관리
+
+- 중앙집중식 버전관리(CVCS - Centralized Version Control System)
+  - CVS
+  - 로컬방식보다 공동작업에 이점이 있다.
+  - 중앙 서버에 문제가 발생하게되면 심각한 문제가 생긴다.
+  
+- 분산 버전 관리 시스템(DVCS - Distributed Version Control System)
+  - 깃허브: 분산서버의 이점으로 그래서 작은회사도 깃허브를 쓰기 시작함
+  - 중앙 서버 이외에 여러 곳에 동일한 서버의 사본 (엄밀한 의미에서는 사본이 아니지만) 을 유지 및 관리하여 CVCS의 단점을 보완함
+
+---
+
+### Github - Sourcetree 사용
+
+- [여기에 정리했음! 확인하기!](https://zimt.tk/Github-SourceTree-1562ba21b4444ea3a57c40f9f5f26631)
